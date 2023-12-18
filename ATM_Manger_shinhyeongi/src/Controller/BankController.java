@@ -33,7 +33,7 @@ public class BankController {
 	*/
 	
 	// 사용불가 아이디 체크
-	boolean CheckName(String id) {
+	private boolean CheckName(String id) {
 		if (noName == null)
 			return false;
 		for (int i = 0; i < noName.length; i++)
@@ -44,7 +44,7 @@ public class BankController {
 	}
 
 	// 기본 설정
-	public BankController() {
+	private public BankController() {
 		// TODO Auto-generated constructor stub
 		Acdao = new AccountDAO();
 		cldao = new ClientDAO();
@@ -53,7 +53,7 @@ public class BankController {
 	}
 
 	// 메뉴출력
-	void printMenu() {
+	private void printMenu() {
 		if (session.isBlank()) {
 			System.out.print("[1] 관리자\n[2] 사용자\n[0] 종료\n[0-2]");
 		} else if (session.equals("관리자")) {
@@ -68,7 +68,7 @@ public class BankController {
 	}
 
 	// 메뉴 입력 범위 확인
-	boolean CheckInpNumber(int i) {
+	private boolean CheckInpNumber(int i) {
 		if (session.isBlank()) {
 			if (i < 0 || i > 2) {
 				System.out.println("0 ~ 2 사이의 값을 입력해주세요");
@@ -94,7 +94,7 @@ public class BankController {
 	}
 
 	// 첫 화면 입력 처리
-	String NodataMenu(int i) {
+	private String NodataMenu(int i) {
 		if (i == 1) {
 			return "관리자";
 		} else if (i == 2) {
@@ -104,7 +104,7 @@ public class BankController {
 	}
 
 	// 관리자 메뉴 입력 처리
-	void ManagerMenu(int i) {
+	private void ManagerMenu(int i) {
 		if (i == 1) {
 			// 회원목록 조회
 			System.out.println("[회원목록]");
@@ -164,7 +164,7 @@ public class BankController {
 	}
 
 	// 유저 메뉴 입력 처리(로그인 안한상태)
-	void UserMenu(int i) {
+	private void UserMenu(int i) {
 		if (i == 1) {
 			// 회원가입
 			String id = u.getString("아이디를 입력 하세요 :");
@@ -197,7 +197,7 @@ public class BankController {
 	}
 
 	// 로그인 한 유저 입력 처리
-	void LoginUserMenu(int i) {
+	private void LoginUserMenu(int i) {
 		if (i == 1) {
 			// 계좌 추가
 			if (Acdao.UserAccountCount(session) >= 3) {
@@ -246,7 +246,7 @@ public class BankController {
 	}
 
 	// 메뉴 호츌
-	boolean CallMenu(int i) {
+	private boolean CallMenu(int i) {
 		if (session.isBlank()) {
 			if (i == 0) {
 				// 종료시키기
@@ -281,13 +281,13 @@ public class BankController {
 	}
 
 	// 로드
-	void SetRodaData(String[] data) {
+	private void SetRodaData(String[] data) {
 		cldao.SetData(data[0]);
 		Acdao.SetData(data[1]);
 	}
 
 	// 계좌 삭제 -> 출금까지
-	void CheckAccount(int i, String s) {
+	private void CheckAccount(int i, String s) {
 		if (Acdao.UserAccountCount(session) == 0) {
 			System.out.println("계좌가 없습니다!");
 			return;
@@ -347,7 +347,7 @@ public class BankController {
 	}
 
 	// 계좌번호 입력 형식 확인
-	boolean CheckAccount(String s) {
+	private boolean CheckAccount(String s) {
 		String data = "1111-1111-1111";
 		if (data.length() != s.length()) {
 			return true;

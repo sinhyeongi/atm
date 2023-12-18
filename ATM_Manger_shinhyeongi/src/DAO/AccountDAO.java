@@ -3,7 +3,7 @@ package DAO;
 import Model.Account;
 
 public class AccountDAO {
-	Account[] account;
+	private Account[] account;
 	
 	
 	//불러오기

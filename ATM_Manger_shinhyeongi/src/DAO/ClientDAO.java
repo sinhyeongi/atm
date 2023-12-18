@@ -3,7 +3,7 @@ package DAO;
 import Model.Client;
 
 public class ClientDAO {
-	Client[] client;
+	private Client[] client;
 	
 	//유저 번호 업데이트
 	public void UpdataUserNo() {
