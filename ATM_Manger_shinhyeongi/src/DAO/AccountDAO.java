@@ -46,7 +46,7 @@ public class AccountDAO {
 		int count = UserAccountCount(id);
 		if(count == 0) return;
 		for(int i = 0 ; i < account.size(); i++) {
-			if(CheckIdAndAcc(id,account.get(i)) == false) {
+			if(CheckIdAndAcc(id,account.get(i))) {
 				if(account.size() == 1) {
 					account.clear();
 					break;
@@ -134,7 +134,7 @@ public class AccountDAO {
 		System.out.println("[ 출금 완료 ]");
 	}
 	//아이다와 계좌번호가 같은지 확인 (반복문 용도)
-	public boolean CheckIdAndAcc(String id,String acc,Account account) {
+	private  boolean CheckIdAndAcc(String id,String acc,Account account) {
 		if(account.getAccNumber().equals(acc) && account.getClientId().equals(id))
 			return true;
 		return false;
@@ -158,6 +158,8 @@ public class AccountDAO {
 	//입금
 	public void PlustAccountMoney(int money, String id,String acc) {
 		if(account == null) return;
+		
+		System.out.println(money);
 		for(int i = 0 ; i < account.size(); i++) {
 			if(CheckIdAndAcc(id, acc, account.get(i))) {
 				account.get(i).setMoney(account.get(i).getMoney() + money) ;

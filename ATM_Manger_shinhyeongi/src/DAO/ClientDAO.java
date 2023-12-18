@@ -64,7 +64,8 @@ public class ClientDAO {
 			data += client.get(i).getClientNo() + "/"+client.get(i).getId()+"/"
 		+client.get(i).getPw()+"/"+client.get(i).getName()+"\n";
 		}
-		data = data.substring(0,data.length()-1);
+		if(data.length() != 0)
+			data = data.substring(0,data.length()-1);
 		return data;
 	}
 	//비밀번호 변경

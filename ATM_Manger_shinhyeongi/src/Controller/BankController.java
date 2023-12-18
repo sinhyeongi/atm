@@ -317,6 +317,7 @@ public class BankController {
 				System.out.println("100원 이상 입력해주세요");
 				return;
 			}
+			Acdao.PlustAccountMoney(money,session,acc);
 		} else if (i == 4) {
 			// 출금
 			int money = u.getInt("출금하실 금액을 입력해주세요 :");
@@ -324,7 +325,7 @@ public class BankController {
 				System.out.println("계좌 잔액을 초과하여 입력하셨습니다.");
 				return;
 			}
-
+			Acdao.OneUserSubMoney(money, session, acc);	
 		} else if (i == 5) {
 			String acc2 = u.getString("[" + s + "]이체 받을 계좌번호를 입려하세요 : ");
 			if (CheckAccount(acc2) == false) {
