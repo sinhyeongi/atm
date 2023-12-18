@@ -6,10 +6,15 @@ import Model.Account;
 
 public class AccountDAO {
 	private ArrayList<Account> account;
-	public AccountDAO(){
+	private AccountDAO(){
 		account = new ArrayList<Account>();
 	}
+	private static AccountDAO instance;
 	
+	public static AccountDAO GetInstace() {
+		if(instance == null) instance = new AccountDAO();
+		return instance;
+	}
 	//불러오기
 	public void SetData(String data) {
 		if(data == null || data.length() == 0)return;

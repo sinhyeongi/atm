@@ -7,8 +7,16 @@ import Model.Client;
 public class ClientDAO {
 	private ArrayList<Client> client;
 	
-	public ClientDAO() {
+	private ClientDAO() {
 		client = new ArrayList<Client>();
+	}
+	
+	private static ClientDAO instance;
+	
+	public static ClientDAO GetInstance() {
+		if(instance == null) instance = new ClientDAO();
+		
+		return instance;
 	}
 	//유저 번호 업데이트
 	public void UpdataUserNo() {

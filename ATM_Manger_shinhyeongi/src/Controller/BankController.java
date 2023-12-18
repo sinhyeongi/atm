@@ -48,10 +48,10 @@ public class BankController {
 	// 기본 설정
 	public BankController() {
 		// TODO Auto-generated constructor stub
-		Acdao = new AccountDAO();
-		cldao = new ClientDAO();
+		Acdao = AccountDAO.GetInstace();
+		cldao = ClientDAO.GetInstance();
 		session = "";
-		u = new Util();
+		u = Util.GetInstance();
 	}
 
 	// 메뉴출력

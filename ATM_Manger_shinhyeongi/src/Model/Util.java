@@ -11,9 +11,21 @@ import java.util.Scanner;
 public class Util {
 	private Scanner scanner = new Scanner(System.in);
 
-	private File userf = new File(".\\");
-	private File accountf = new File(".\\");
-
+	private File userf;
+	private File accountf;
+	private static Util instance;
+	private Util() {
+		userf = new File(".\\");
+		accountf = new File(".\\");
+	}
+	
+	public static Util GetInstance() {
+		if (instance == null) {
+			instance = new Util();
+		}
+		return instance;
+	}
+	
 	// account.txt client.txt
 	// 파일 있는 확인
 	void CheckFile(File f, File f2) {
