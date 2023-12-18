@@ -5,12 +5,12 @@ import DAO.ClientDAO;
 import Model.Util;
 
 public class BankController {
-	AccountDAO Acdao;
-	ClientDAO cldao;
-	Util u;
-	String session;
+	private AccountDAO Acdao;
+	private ClientDAO cldao;
+	private Util u;
+	private String session;
 	//사용 불가 이름 리스트
-	String noName[] = { "관리자", "사용자" };
+	private String noName[] = { "관리자", "사용자" };
 	/*
 	   [1] 관리자 [2] 사용자 [0] 종료
 	   관리자
