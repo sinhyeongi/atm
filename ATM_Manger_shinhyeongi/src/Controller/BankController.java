@@ -1,4 +1,8 @@
-package ATM;
+package Controller;
+
+import DAO.AccountDAO;
+import DAO.ClientDAO;
+import Model.Util;
 
 public class BankController {
 	AccountDAO Acdao;
@@ -360,7 +364,7 @@ public class BankController {
 	}
 
 	// 메인에서 실행할 부분
-	void run() {
+	public void run() {
 		while (true) {
 			printMenu();
 			int i = u.getInt("입력 : ");
