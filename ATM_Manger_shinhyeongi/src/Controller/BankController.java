@@ -1,5 +1,7 @@
 package Controller;
 
+import java.util.regex.Pattern;
+
 import DAO.AccountDAO;
 import DAO.ClientDAO;
 import Model.Util;
@@ -44,7 +46,7 @@ public class BankController {
 	}
 
 	// 기본 설정
-	private public BankController() {
+	public BankController() {
 		// TODO Auto-generated constructor stub
 		Acdao = new AccountDAO();
 		cldao = new ClientDAO();
@@ -205,7 +207,7 @@ public class BankController {
 				return;
 			}
 			String accNumber = u.getString("계좌번호 :");
-			if (CheckAccount(accNumber)) {
+			if (CheckAccount(accNumber) == false) {
 				System.err.println("1111-1111-1111 이와 같은 형태로 입력해주세요");
 				return;
 			}
@@ -293,7 +295,7 @@ public class BankController {
 			return;
 		}
 		String acc = u.getString("[" + s + "]계좌번호를 입려하세요 : ");
-		if (CheckAccount(acc)) {
+		if (CheckAccount(acc) == false) {
 			System.err.println("1111-1111-1111 이와 같은 형태로 입력해주세요");
 			return;
 		}
@@ -325,7 +327,7 @@ public class BankController {
 
 		} else if (i == 5) {
 			String acc2 = u.getString("[" + s + "]이체 받을 계좌번호를 입려하세요 : ");
-			if (CheckAccount(acc2)) {
+			if (CheckAccount(acc2) == false) {
 				System.err.println("1111-1111-1111 이와 같은 형태로 입력해주세요");
 				return;
 			} else if (acc.equals(acc2)) {
@@ -348,19 +350,9 @@ public class BankController {
 
 	// 계좌번호 입력 형식 확인
 	private boolean CheckAccount(String s) {
-		String data = "1111-1111-1111";
-		if (data.length() != s.length()) {
-			return true;
-		}
-		int count = 0;
-		for (int i = 0; i < s.length(); i++) {
-			if (s.charAt(i) == '-')
-				count++;
-		}
-		if (count != 2) {
-			return true;
-		}
-		return false;
+		//정규 표현식
+		String pattern = "^[\\d]{4}-[\\d]{4}-[\\d]{4}$";
+		return Pattern.matches(pattern, s);
 	}
 
 	// 메인에서 실행할 부분

@@ -1,19 +1,23 @@
 package DAO;
 
+import java.util.ArrayList;
+
 import Model.Account;
 
 public class AccountDAO {
-	private Account[] account;
-	
+	private ArrayList<Account> account;
+	public AccountDAO(){
+		account = new ArrayList<Account>();
+	}
 	
 	//불러오기
 	public void SetData(String data) {
 		if(data == null || data.length() == 0)return;
 		String[] user = data.split("\n");
-		account = new Account[user.length];
+		if(account == null) account = new ArrayList<Account>();
 		for(int i = 0 ; i < user.length; i++) {
 			String t[] = user[i].split("/");
-			account[i] = new Account(t[0],t[1],Integer.parseInt(t[2]));
+			account.add(new Account(t[0],t[1],Integer.parseInt(t[2])));
 		}
 		System.out.println("불러오기 완료");
 	}
@@ -21,8 +25,8 @@ public class AccountDAO {
 	public int UserAccountCount(String id) {
 		if(account == null) return 0;
 		int c = 0;
-		for(int i = 0; i < account.length; i++) {
-			if(id.equals(account[i].getClientId()))
+		for(int i = 0; i < account.size(); i++) {
+			if(id.equals(account.get(i).getClientId()))
 				c++;
 		}
 		return c;
@@ -31,8 +35,8 @@ public class AccountDAO {
 	public String GetAllAccountData() {
 		if(account == null) return"";
 		String data ="";
-		for(int i = 0 ; i < account.length; i++) {
-			data += account[i].getClientId()+"/"+account[i].getAccNumber()+"/"+account[i].getMoney()+"\n";
+		for(int i = 0 ; i < account.size(); i++) {
+			data += account.get(i).getClientId()+"/"+account.get(i).getAccNumber()+"/"+account.get(i).getMoney()+"\n";
 		}
 		data = data.substring(0,data.length() -1);
 		return data;
@@ -41,12 +45,14 @@ public class AccountDAO {
 	public void DeleteUser(String id) {
 		int count = UserAccountCount(id);
 		if(count == 0) return;
-		Account[] copy = account;
-		account = new Account[copy.length - count];
-		int idx = 0;
-		for(int i = 0 ; i < copy.length; i++) {
-			if(CheckIdAndAcc(id,copy[i]) == false) {
-				account[idx++] = copy[i];
+		for(int i = 0 ; i < account.size(); i++) {
+			if(CheckIdAndAcc(id,account.get(i)) == false) {
+				if(account.size() == 1) {
+					account.clear();
+					break;
+				}
+				account.remove(i);
+				i--;
 			}
 		}
 	}
@@ -54,9 +60,9 @@ public class AccountDAO {
 	public 	String UserAllAccount(String id) {
 			if(account == null )return "";
 			String data = String.format("%7s\t%s\n","계좌번호","계좌잔액");
-			for(int i = 0 ; i < account.length; i++) {
-				if(CheckIdAndAcc(id,account[i])) {
-					data += account[i].getAccNumber() + "\t"+account[i].getMoney()+"원\n";
+			for(int i = 0 ; i < account.size(); i++) {
+				if(CheckIdAndAcc(id,account.get(i))) {
+					data += account.get(i).getAccNumber() + "\t"+account.get(i).getMoney()+"원\n";
 				}
 			}
 			return data;
@@ -64,8 +70,8 @@ public class AccountDAO {
 	//새로운 계좌 추가
 	public boolean CheckAccount(String acc) {
 		if(account == null) return false;
-		for(int i = 0 ; i < account.length; i++) {
-			if(account[i].getAccNumber().equals(acc)) {
+		for(int i = 0 ; i < account.size(); i++) {
+			if(account.get(i).getAccNumber().equals(acc)) {
 				return true;
 			}
 		}
@@ -74,11 +80,11 @@ public class AccountDAO {
 	//이체
 	public void TransferMoney(String id, String acc1,String acc2,int Money) {
 		if(account == null) return;
-		for(int i = 0 ; i < account.length; i++) {
-			if(account[i].getAccNumber().equals(acc1) && account[i].getClientId().equals(id)) {
-				account[i].setMoney(account[i].getMoney()- Money);
-			}else if(account[i].getAccNumber().equals(acc2)) {
-				account[i].setMoney(account[i].getMoney() + Money);
+		for(int i = 0 ; i < account.size(); i++) {
+			if(account.get(i).getAccNumber().equals(acc1) && account.get(i).getClientId().equals(id)) {
+				account.get(i).setMoney(account.get(i).getMoney()- Money);
+			}else if(account.get(i).getAccNumber().equals(acc2)) {
+				account.get(i).setMoney(account.get(i).getMoney() + Money);
 			}
 		}
 		System.out.println("[이체 완료]");
@@ -86,8 +92,8 @@ public class AccountDAO {
 	//아이디 와 계좌번호가 같은 것이 있는지 체크
 	public boolean CheckAccount(String acc,String id) {
 		if(account == null) return false;
-		for(int i = 0 ; i < account.length; i++) {
-			if(CheckIdAndAcc(id, acc, account[i])) {
+		for(int i = 0 ; i < account.size(); i++) {
+			if(CheckIdAndAcc(id, acc, account.get(i))) {
 				return true;
 			}
 		}
@@ -95,17 +101,15 @@ public class AccountDAO {
 	}
 	//아이디 값으로 한개의 계좌 삭제
 	public void DeleteOneAccount(String id, String acc) {
-		if(account.length == 1) {
-			account = null;
+		if(account.size() == 1) {
+			account.clear();
 			System.out.println(acc+"계좌 삭제 완료");
 			return;
 		}
-		Account[] copy = account;
-		account = new Account[copy.length - 1];
-		int idx = 0;
-		for(int i = 0 ; i < copy.length; i++) {
-			if(CheckIdAndAcc(id, acc, copy[i]) == false) {
-				account[idx++] = copy[i];
+		for(int i = 0 ; i < account.size(); i++) {
+			if(CheckIdAndAcc(id, acc, account.get(i))) {
+				account.remove(i);
+				break;
 			}
 		}
 		System.out.println(acc+"계좌 삭제 완료");
@@ -113,23 +117,17 @@ public class AccountDAO {
 	//새로운 계좌 생성
 	public void NewAccount(String Id, String accNumber) {
 		if(account == null) {
-			account = new Account[1];
-		}else {
-			Account[] copy = account;
-			account = new Account[copy.length + 1];
-			for(int i = 0 ; i < copy.length; i++) {
-				account[i] = copy[i];
-			}
+			account = new ArrayList<Account>();
 		}
-		account[account.length - 1] = new Account(Id,accNumber);
+		account.add(new Account(Id,accNumber));
 		System.out.println("계좌 추가 완료");
 	}
 	//계좌 잔액 출금 
 	public void OneUserSubMoney(int money,String id, String acc) {
 		if(account == null )return;
-		for(int i = 0 ; i < account.length; i++) {
-			if(CheckIdAndAcc(id, acc, account[i])) {
-				account[i].setMoney(account[i].getMoney() - money) ;
+		for(int i = 0 ; i < account.size(); i++) {
+			if(CheckIdAndAcc(id, acc, account.get(i))) {
+				account.get(i).setMoney(account.get(i).getMoney() - money) ;
 				break;
 			}
 		}
@@ -150,9 +148,9 @@ public class AccountDAO {
 	//유저 한명의 계좌 잔액 리턴
 	public int getOneUserMoney(String id, String acc) {
 		if(account == null) return 0;
-		for(int i = 0 ; i < account.length; i++) {
-			if(CheckIdAndAcc(id, acc, account[i])) {
-				return account[i].getMoney();
+		for(int i = 0 ; i < account.size(); i++) {
+			if(CheckIdAndAcc(id, acc, account.get(i))) {
+				return account.get(i).getMoney();
 			}
 		}
 		return 0;
@@ -160,9 +158,9 @@ public class AccountDAO {
 	//입금
 	public void PlustAccountMoney(int money, String id,String acc) {
 		if(account == null) return;
-		for(int i = 0 ; i < account.length; i++) {
-			if(CheckIdAndAcc(id, acc, account[i])) {
-				account[i].setMoney(account[i].getMoney() + money) ;
+		for(int i = 0 ; i < account.size(); i++) {
+			if(CheckIdAndAcc(id, acc, account.get(i))) {
+				account.get(i).setMoney(account.get(i).getMoney() + money) ;
 				break;
 			}
 		}
